@@ -10,7 +10,7 @@ f = open('stock.json','r')
 proxies={
     'https' : '107.170.164.50:3128'
 }
-port = int(os.environ.get('PORT', 33507))
+port = int(os.environ.get('PORT', 80))
 
 @app.route('/')
 def home():
@@ -61,4 +61,4 @@ def get(stockname):
         else:
             return "stock not found"
 
-app.run(debug=True,host='0.0.0.0')
+app.run(debug=True,host='0.0.0.0',port=port)
