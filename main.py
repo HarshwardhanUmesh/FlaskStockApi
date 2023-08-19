@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 import json
 
-app = Flask("__main__")
+app = Flask(__name__)
 f = open('stock.json','r')
 proxies={
     'https' : '107.170.164.50:3128'
