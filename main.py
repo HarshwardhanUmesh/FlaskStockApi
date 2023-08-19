@@ -1,3 +1,4 @@
+import os
 import requests
 from flask import Flask,jsonify
 from bs4 import BeautifulSoup
@@ -60,4 +61,4 @@ def get(stockname):
         else:
             return "stock not found"
 
-app.run(debug=True,host='0.0.0.0',port=81)
+app.run(debug=True,host='0.0.0.0',port=int(os.getenv('PORT', 80)))
