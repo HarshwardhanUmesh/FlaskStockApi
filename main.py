@@ -6,6 +6,8 @@ from bs4 import BeautifulSoup
 import json
 
 app = Flask(__name__)
+app.config['JSON_SORT_KEYS'] = False
+
 f = open('stock.json','r')
 proxies={
     'https' : '107.170.164.50:3128'
