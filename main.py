@@ -10,7 +10,7 @@ f = open('stock.json','r')
 proxies={
     'https' : '107.170.164.50:3128'
 }
-port = int(os.environ.get('PORT', 8000))
+port = int(os.environ.get('PORT', 80))
 
 @app.route('/')
 def home():
