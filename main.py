@@ -60,4 +60,4 @@ def get(stockname):
         else:
             return "stock not found"
 
-app.run(debug=True,host='0.0.0.0',port=1669)
+app.run(debug=True,host='0.0.0.0',port=8001)
