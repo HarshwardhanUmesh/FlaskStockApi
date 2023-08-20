@@ -10,9 +10,6 @@ app.config['JSON_SORT_KEYS'] = False
 app.json.sort_keys = False
 
 f = open('stock.json','r')
-proxies={
-    'https' : '107.170.164.50:3128'
-}
 port = int(os.environ.get('PORT', 80))
 
 @app.route('/')
@@ -32,6 +29,8 @@ def get(stockname):
             print(response)
             soup = BeautifulSoup(response.content, 'html.parser')
             Stock = soup.find(class_="inid_name").find('h1').text
+            Market_value = soup.find(class_="pcstkspr nsestkcp bsestkcp futstkcp optstkcp").text
+            fluctuation = soup.find(id="stick_ch_prch").text
             opens = soup.find(class_="nseopn bseopn")
             prev_close = soup.find(class_="nseprvclose bseprvclose")
             volume = soup.find(class_="nsevol bsevol")
@@ -49,6 +48,8 @@ def get(stockname):
                 newsList.append(new.get('href'))
             jsonfile = {
                 "Stock" : Stock,
+                "Market Value" : Market_value,
+                "fluctuation" : fluctuation,
                 "Open" : opens.text,
                 "Previous Close" : prev_close.text.split('\n')[0],
                 "Volume" : volume.text,
