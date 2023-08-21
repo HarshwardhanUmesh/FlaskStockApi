@@ -24,7 +24,7 @@ def get(stockname):
         print(data)
         if stockname in data:
             print("ok")
-            url = data[stockname]
+            url = data[stockname]['url']
             response = requests.get(url=url)
             print(response)
             soup = BeautifulSoup(response.content, 'html.parser')
@@ -46,6 +46,41 @@ def get(stockname):
             for new in news:
                 newsList.append(new.text)
                 newsList.append(new.get('href'))
+            today = datetime.now()
+            from_timestamp = math.floor(today.timestamp() / 86400) * 86400
+            to_stamp = from_timestamp - (86400 * 365)
+            url="https://priceapi.moneycontrol.com/techCharts/indianMarket/stock/history?"
+            parameter = {
+                "symbol" : data[stockname]['symbol'],
+                "resolution" : "1D",
+                "from" : from_timestamp,
+                "to" : to_stamp,
+                "countback" : 365,
+                "currencyCode" : "INR"
+            }
+            header= {
+                # ":authority:" : "priceapi.moneycontrol.com",
+                # ":method:" : "GET",
+                # ":path:" : "/techCharts/indianMarket/stock/history?symbol=RELIANCE&resolution=1D&from=1656288000&to=1692"
+                #            "576000&countback=300&currencyCode=INR",
+                # ":scheme:" : "https",
+                "Accept" : "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;"
+                            "q=0.8,application/signed-exchange;v=b3;q=0.7",
+                "Accept-Encoding" : "gzip, deflate, br",
+                "Accept-Language" : "en-US,en;q=0.9",
+                "Cache-Control" : "Cache-Control:",
+                "Sec-Ch-Ua" : '"Not/A)Brand";v="99", "Google Chrome";v="115", "Chromium";v="115"',
+                "Sec-Ch-Ua-Mobile" : "?0",
+                "Sec-Ch-Ua-Platform" : '"Windows"',
+                "Sec-Fetch-Dest" : "document",
+                "Sec-Fetch-Mode" : "navigate",
+                "Sec-Fetch-Site" : "none",
+                "Sec-Fetch-User" : "?1",
+                "Upgrade-Insecure-Requests" : "1",
+                "User-Agent" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36"
+            }
+            response = requests.get(url=url,params=parameter,headers=header)
+            print(response)
             jsonfile = {
                 "Stock" : Stock,
                 "Market Value" : Market_value,
@@ -59,10 +94,11 @@ def get(stockname):
                 "52 Week Low" : yearly_low.text,
                 "Market Capital" : Market_Cap.text,
                 "Dividend_yield" : dividend_yield.text,
-                "Related News" : newsList
+                "Related News" : newsList,
+                "chart" : response.json()
             }
             return jsonify(jsonfile)
         else:
-            return "stock not found"
+            return jsonify({"Stock" : "stock not found")
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0')
