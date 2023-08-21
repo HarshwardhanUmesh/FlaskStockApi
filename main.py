@@ -50,13 +50,13 @@ def get(stockname):
                 newsList.append(new.get('href'))
             today = datetime.now()
             to_timestamp = math.floor(today.timestamp() / 86400) * 86400
-            from_stamp = to_timestamp - (86400 * 365)
+            from_timestamp = to_timestamp - (86400 * 365)
             url="https://priceapi.moneycontrol.com/techCharts/indianMarket/stock/history?"
             parameter = {
                 "symbol" : data[stockname]['symbol'],
                 "resolution" : "1D",
                 "from" : from_timestamp,
-                "to" : to_stamp,
+                "to" : to_timestamp,
                 "countback" : 300,
                 "currencyCode" : "INR"
             }
