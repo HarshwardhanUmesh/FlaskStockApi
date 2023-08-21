@@ -101,6 +101,6 @@ def get(stockname):
             }
             return jsonify(jsonfile)
         else:
-            return jsonify({"Stock" : "stock not found")
+            return jsonify({"Stock" : "stock not found"})
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0')
